@@ -1,15 +1,20 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 
 const Link = ({ data, onPress }) => {
     return (
         <TouchableOpacity onPress={onPress}>
-            {data.active ? <Text style={styles.active}>{data.label}</Text> : <Text style={styles.link}>{data.label}</Text>}
+            <View style={styles.button}>
+                {data.active ? <Text style={styles.active}>{data.label}</Text> : <Text style={styles.link}>{data.label}</Text>}
+            </View>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
+    button: {
+        padding: 15
+    },
     link: {
         textTransform: 'uppercase',
         color: '#909AA2',

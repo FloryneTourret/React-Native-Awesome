@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { ScrollView, View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 
 import Navbar from '../components/navbar'
 import Link from '../components/link'
+import ContentBox from '../components/contentBox'
 
 class ProfileScreen extends Component {
 
@@ -12,7 +13,7 @@ class ProfileScreen extends Component {
         const { link1, link2, link3, toggleActive } = this.props
 
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container} >
                 <TouchableOpacity>
                     <Icon
                         name="setting"
@@ -33,7 +34,30 @@ class ProfileScreen extends Component {
                         <Link data={link3} onPress={() => { toggleActive(link3) }}></Link>
                     </Navbar>
                 </View>
-            </View>
+
+                {
+                    link1.active ?
+                        <ContentBox>
+                            <Text>Oui</Text>
+                        </ContentBox >
+                        : null
+                }
+                {
+                    link2.active ?
+                        <ContentBox>
+                            <Text>Non</Text>
+                        </ContentBox>
+                        : null
+                }
+                {
+                    link3.active ?
+                        <ContentBox>
+                            <Text>Peut etre</Text>
+                        </ContentBox>
+                        : null
+                }
+
+            </ScrollView >
         );
     }
 }
@@ -49,7 +73,7 @@ const styles = StyleSheet.create({
     container: {
         padding: 30,
         flex: 1,
-        backgroundColor: '#F4F4FA'
+        backgroundColor: '#F4F4FA',
     },
     settings: {
         fontSize: 25,

@@ -60,7 +60,7 @@ const switchNavigator = createSwitchNavigator(
     AuthFlow,
   },
   {
-    initialRouteName: 'AuthFlow'
+    initialRouteName: 'LoginFlow'
   }
 );
 
