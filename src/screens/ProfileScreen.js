@@ -62,12 +62,6 @@ class ProfileScreen extends Component {
     }
 }
 
-const toggleActive = (value) => {
-    return {
-        type: 'active',
-        payload: { item: value }
-    }
-}
 
 const styles = StyleSheet.create({
     container: {
@@ -109,6 +103,13 @@ const styles = StyleSheet.create({
     }
 });
 
+const toggleActive = (value) => {
+    console.log('Toggle Active')
+    return {
+        type: 'active',
+        payload: { item: value }
+    }
+}
 const mapStateToProps = (state) => {
     return state.profileNav;
 };

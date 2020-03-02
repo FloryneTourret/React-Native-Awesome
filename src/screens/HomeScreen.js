@@ -9,6 +9,12 @@ const HomeScreen = () => {
     );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        padding: 30,
+        flex: 1,
+        backgroundColor: '#F4F4FA',
+    },
+});
 
 export default HomeScreen;

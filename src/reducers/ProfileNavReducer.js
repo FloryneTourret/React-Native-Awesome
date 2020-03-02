@@ -39,6 +39,7 @@ const initalState = {
 }
 
 const ProfileNav = (state = initalState, action) => {
+    console.log('Nav ' + action.type)
     switch (action.type) {
         case 'active':
             newstate = {}

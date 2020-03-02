@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from './src/reducers';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from './src/screens/HomeScreen'
 import ProfileScreen from './src/screens/ProfileScreen'
 import LoginScreen from './src/screens/LoginScreen'
+import LoadingScreen from './src/screens/LoadingScreen'
 
 
 const LoginFlow = createStackNavigator(
   {
-    Login: LoginScreen
+    Login: {
+      screen: LoginScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    }
   },
   {
     initialRouteName: 'Login'
@@ -56,20 +63,44 @@ const AuthFlow = createBottomTabNavigator(
 
 const switchNavigator = createSwitchNavigator(
   {
+    Loading: LoadingScreen,
     LoginFlow,
     AuthFlow,
   },
   {
-    initialRouteName: 'LoginFlow'
+    initialRouteName: 'Loading'
   }
 );
 
-const App = createAppContainer(switchNavigator);
+const AppContainer = createAppContainer(switchNavigator);
 
-export default () => {
-  return (
-    <Provider store={createStore(reducers)}>
-      <App />
-    </Provider>
-  )
-};
+class App extends Component {
+
+  state = { user: null };
+
+  componentDidMount() {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyBo55JzwyrWY3QeA9nGWHEOWDSuNiLBpsk",
+        authDomain: "awesome-c338c.firebaseapp.com",
+        databaseURL: "https://awesome-c338c.firebaseio.com",
+        projectId: "awesome-c338c",
+        storageBucket: "awesome-c338c.appspot.com",
+        messagingSenderId: "1029016023096",
+        appId: "1:1029016023096:web:8a0e0d8445aa80b799b6cd",
+        measurementId: "G-GWGFVB9X8M"
+      });
+    }
+  }
+
+  render() {
+    return (
+      <Provider store={createStore(reducers)}>
+        <AppContainer user={this.state.user} />
+      </Provider>
+    );
+  }
+
+}
+
+export default App;

@@ -10,6 +10,9 @@ npm install react-navigation-tabs
 
 react-native run-android
 react-native start
+
+
+npm install --save react-native-firebase
 ```
 
 
