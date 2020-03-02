@@ -11,8 +11,9 @@ class LoadingScreen extends Component {
         const getUser = async () => {
             try {
                 user = await AsyncStorage.getItem('user')
-                if (user)
+                if (user) {
                     await toggleUser(JSON.parse(user))
+                }
                 else {
                     await toggleUser(null)
                 }

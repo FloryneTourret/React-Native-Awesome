@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image } from 'react-native';
 import Button from '../components/button'
 import Icon from 'react-native-vector-icons/AntDesign';
-import { AsyncStorage } from "react-native";
 
 class LoginScreen extends Component {
     state = { email: '', password: '', errorMessage: '', loading: '', loggedIn: false }
@@ -48,44 +47,50 @@ class LoginScreen extends Component {
     render() {
         const { toggleUser } = this.props
         return (
-            <View style={styles.container}>
-                <Text style={styles.heading}>Welcome</Text>
-                <Text style={styles.subheading}>Log In or Join now !</Text>
-                {this.state.errorMessage ? <Text style={styles.error}>{this.state.errorMessage}</Text> : null}
-                <View style={styles.section}>
-                    <Icon
-                        name="mail"
-                        style={styles.icon}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="john.doe@gmail.com"
-                        value={this.state.email}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        onChangeText={email => this.setState({ email })}
-                    />
-                </View>
+            <View>
+                <Image
+                    style={styles.background}
+                    source={require('../../assets/img/background.jpg')}
+                />
+                <View style={styles.container}>
+                    <Text style={styles.heading}>Welcome</Text>
+                    <Text style={styles.subheading}>Log In or Join now !</Text>
+                    {this.state.errorMessage ? <Text style={styles.error}>{this.state.errorMessage}</Text> : null}
+                    <View style={styles.section}>
+                        <Icon
+                            name="mail"
+                            style={styles.icon}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="john.doe@gmail.com"
+                            value={this.state.email}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onChangeText={email => this.setState({ email })}
+                        />
+                    </View>
 
-                <View style={styles.section}>
-                    <Icon
-                        name="lock"
-                        style={styles.icon}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Password"
-                        value={this.state.password}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        onChangeText={password => this.setState({ password })}
-                        secureTextEntry
-                    />
-                </View>
-                <View style={styles.buttonSection}>
-                    {this.state.loading ? <ActivityIndicator size="large" color="#0000ff" /> :
-                        <Button label='Log In' onPress={() => { this.onButtonPress(toggleUser) }}></Button>
-                    }
+                    <View style={styles.section}>
+                        <Icon
+                            name="lock"
+                            style={styles.icon}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Password"
+                            value={this.state.password}
+                            autoCapitalize="none"
+                            autoCorrect={false}
+                            onChangeText={password => this.setState({ password })}
+                            secureTextEntry
+                        />
+                    </View>
+                    <View style={styles.buttonSection}>
+                        {this.state.loading ? <ActivityIndicator size="large" color="#0000ff" /> :
+                            <Button label='Log In' onPress={() => { this.onButtonPress(toggleUser) }}></Button>
+                        }
+                    </View>
                 </View>
             </View>
         );
@@ -95,10 +100,16 @@ class LoginScreen extends Component {
 
 
 const styles = StyleSheet.create({
+    background: {
+        height: 200,
+        width: 'auto'
+    },
     container: {
         padding: 30,
-        flex: 1,
         backgroundColor: '#F4F4FA',
+        marginTop: -20,
+        borderTopRightRadius: 15,
+        borderTopLeftRadius: 15,
     },
     heading: {
         color: '#364354',
@@ -106,7 +117,7 @@ const styles = StyleSheet.create({
         textTransform: 'capitalize',
         fontSize: 60,
         alignSelf: 'center',
-        marginTop: 100,
+        marginTop: 20,
         marginBottom: 20
     },
     subheading: {
@@ -114,7 +125,7 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
         fontSize: 20,
         alignSelf: 'center',
-        marginBottom: 70
+        marginBottom: 50
     },
     error: {
         fontSize: 18,

@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     button: {
         paddingVertical: 10,
         paddingHorizontal: 20,
-        backgroundColor: '#5768FC',
+        backgroundColor: '#5468FF',
         borderRadius: 15,
         flexDirection: 'row',
         justifyContent: 'space-between'
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         color: '#F9FBF5',
         fontSize: 16,
         alignSelf: 'center',
-        backgroundColor: '#3D56EF',
+        backgroundColor: '#3C56F2',
         padding: 10,
         borderRadius: 100,
 

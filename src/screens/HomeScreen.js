@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 class HomeScreen extends Component {
 
     render() {
+        const { userAuth } = this.props
+
 
         return (
             <View style={styles.container}>
-                <Text>Home</Text>
+                <Text>Home {userAuth.email}</Text>
             </View>
         );
     }

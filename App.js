@@ -11,6 +11,7 @@ import HomeScreen from './src/screens/HomeScreen'
 import ProfileScreen from './src/screens/ProfileScreen'
 import LoginScreen from './src/screens/LoginScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
+import SettingsScreen from './src/screens/SettingsScreen'
 
 
 const LoginFlow = createStackNavigator(
@@ -27,6 +28,26 @@ const LoginFlow = createStackNavigator(
   }
 );
 
+const ProfileFlow = createStackNavigator(
+  {
+    Settings: {
+      screen: SettingsScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    Profile: {
+      screen: ProfileScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    }
+  },
+  {
+    initialRouteName: 'Profile'
+  }
+)
+
 const AuthFlow = createBottomTabNavigator(
   {
     Home: {
@@ -39,7 +60,7 @@ const AuthFlow = createBottomTabNavigator(
       }
     },
     Profile: {
-      screen: ProfileScreen,
+      screen: ProfileFlow,
       navigationOptions: {
         tabBarLabel: 'Profile',
         tabBarIcon: ({ tintColor }) => (
