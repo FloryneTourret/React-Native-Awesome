@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { ScrollView, View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
+import firebase from 'firebase';
+import { AsyncStorage } from "react-native";
 
 import Navbar from '../components/navbar'
 import Link from '../components/link'
@@ -14,12 +16,27 @@ class ProfileScreen extends Component {
 
         return (
             <ScrollView style={styles.container} >
-                <TouchableOpacity>
-                    <Icon
-                        name="setting"
-                        style={styles.settings}
-                    />
-                </TouchableOpacity>
+                <View style={styles.linksAuth}>
+                    <TouchableOpacity>
+                        <Icon
+                            name="setting"
+                            style={styles.iconLinkSettings}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={async () => {
+                            await AsyncStorage.removeItem('user')
+                            firebase.auth().signOut()
+                            await AsyncStorage.getItem('user')
+                            this.props.navigation.navigate('Loading')
+                        }}
+                    >
+                        <Icon
+                            name="logout"
+                            style={styles.iconLinkLogout}
+                        />
+                    </TouchableOpacity>
+                </View>
                 <Image
                     style={styles.avatar}
                     source={require('../../assets/img/user.jpg')}
@@ -69,10 +86,19 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F4F4FA',
     },
-    settings: {
+    linksAuth: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
+    },
+    iconLinkSettings: {
         fontSize: 25,
         color: '#384356',
-        alignSelf: 'flex-end'
+        margin: 5
+    },
+    iconLinkLogout: {
+        fontSize: 23,
+        color: '#384356',
+        margin: 5
     },
     avatar: {
         width: 150,
@@ -104,7 +130,6 @@ const styles = StyleSheet.create({
 });
 
 const toggleActive = (value) => {
-    console.log('Toggle Active')
     return {
         type: 'active',
         payload: { item: value }

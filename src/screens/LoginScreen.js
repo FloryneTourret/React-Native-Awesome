@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator } from 'react-native';
 import Button from '../components/button'
 import Icon from 'react-native-vector-icons/AntDesign';
+import { AsyncStorage } from "react-native";
 
 class LoginScreen extends Component {
     state = { email: '', password: '', errorMessage: '', loading: '', loggedIn: false }
@@ -91,12 +92,7 @@ class LoginScreen extends Component {
     }
 }
 
-const toggleUser = (value) => {
-    return {
-        type: 'SET_USER',
-        payload: { user: value }
-    }
-}
+
 
 const styles = StyleSheet.create({
     container: {
@@ -151,7 +147,12 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
 });
-
+const toggleUser = (value) => {
+    return {
+        type: 'SET_USER',
+        payload: { userAuth: value }
+    }
+}
 const mapStateToProps = (state) => {
     return state.auth;
 };

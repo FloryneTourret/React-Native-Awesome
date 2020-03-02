@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
+import { connect } from 'react-redux';
 
-const HomeScreen = () => {
-    return (
-        <View style={styles.container}>
-            <Text>Home</Text>
-        </View>
-    );
+class HomeScreen extends Component {
+
+    render() {
+
+        return (
+            <View style={styles.container}>
+                <Text>Home</Text>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -17,4 +22,8 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+const mapStateToProps = (state) => {
+    return state.auth;
+};
+
+export default connect(mapStateToProps)(HomeScreen);
