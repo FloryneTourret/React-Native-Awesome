@@ -37,10 +37,10 @@ class LoginScreen extends Component {
         firebase.auth().onAuthStateChanged(async (user) => {
             if (user) {
                 await toggleUser(user);
+                this.props.navigation.navigate('Loading')
             } else {
                 await toggleUser(null);
             }
-            this.props.navigation.navigate('Loading')
         });
     }
 
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         marginBottom: 50
     },
     error: {
-        fontSize: 18,
+        fontSize: 15,
         color: '#5768FC',
         paddingBottom: 15,
         fontWeight: 'bold',

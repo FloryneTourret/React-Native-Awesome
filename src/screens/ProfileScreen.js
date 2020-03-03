@@ -44,10 +44,17 @@ class ProfileScreen extends Component {
                         />
                     </TouchableOpacity>
                 </View>
-                <Image
-                    style={styles.avatar}
-                    source={require('../../assets/img/user.jpg')}
-                />
+                {userAuth.photoURL ?
+                    <Image
+                        style={styles.avatar}
+                        source={{ uri: userAuth.photoURL }}
+                    />
+                    :
+                    <Image
+                        style={styles.avatar}
+                        source={require('../../assets/img/user.png')}
+                    />
+                }
                 {
                     userAuth.displayName ?
                         <Text style={styles.heading}>{userAuth.displayName}</Text>
