@@ -5,6 +5,14 @@ import { AsyncStorage } from "react-native";
 
 class LoadingScreen extends Component {
 
+    componentDidMount() {
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     async componentDidMount() {
         const { toggleUser } = this.props
 

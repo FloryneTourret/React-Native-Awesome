@@ -11,6 +11,14 @@ import ContentBox from '../components/contentBox'
 
 class ProfileScreen extends Component {
 
+    componentDidMount() {
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     render() {
 
         const { profileNav, toggleActive } = this.props
@@ -31,11 +39,10 @@ class ProfileScreen extends Component {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={async () => {
-                            await AsyncStorage.removeItem('user')
+                        onPress={() => {
+                            AsyncStorage.removeItem('user')
                             firebase.auth().signOut()
-                            await AsyncStorage.getItem('user')
-                            this.props.navigation.navigate('Loading')
+                            this.props.navigation.navigate('Login')
                         }}
                     >
                         <Icon

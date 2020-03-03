@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import { ScrollView, View, StyleSheet, TouchableOpacity, Text, ActivityIndicator, Image, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
-import { AsyncStorage } from "react-native";
 import firebase from 'firebase';
 import ImagePicker from 'react-native-image-picker'
 import Input from '../components/input';
 import Button from '../components/button';
 import ButtonDanger from '../components/buttonDanger';
+import { AsyncStorage } from "react-native";
 
 
 class Settings extends Component {
+
 
     userAuth = this.props.auth.userAuth
     state = {
@@ -25,64 +26,73 @@ class Settings extends Component {
         newPasswordRepeat: '',
     };
 
+    componentDidMount() {
+        firebase.auth().onAuthStateChanged(user => {
+        })
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     async onButtonUpdatePress(updateUser) {
 
         this.setState({ loading: true, message: '' })
-        //Update user info
-        firebase.auth().onAuthStateChanged(async (user) => {
-            if (this.state.displayName !== this.userAuth.displayName
-                || this.state.email !== this.userAuth.email
-                || this.state.avatar !== this.userAuth.photoURL) {
-                await user.updateProfile({
-                    displayName: this.state.displayName,
-                    email: this.state.email.trim(),
-                    photoURL: this.state.avatar
-                }).then(async function () {
-                    user = firebase.auth().currentUser
-                    await updateUser(user)
-                }).catch((error) => {
+
+        if (this.state.displayName !== this.userAuth.displayName || this.state.email !== this.userAuth.email || this.state.avatar !== this.userAuth.photoURL) {
+            data = {
+                displayName: this.state.displayName,
+                email: this.state.email.trim(),
+                photoURL: this.state.avatar
+            }
+            await firebase.auth().currentUser.updateProfile(data)
+                .catch((error) => {
                     this.setState({ message: error.message })
                 });
+
+            await updateUser(firebase.auth().currentUser)
+        }
+
+
+        if (this.state.newPassword && this.state.newPasswordRepeat && this.state.oldPassword) {
+            if (this.state.newPassword === this.state.newPasswordRepeat) {
+                await firebase.auth().signInWithEmailAndPassword(this.userAuth.email.trim(), this.state.oldPassword)
+                    .catch((error) => {
+                        this.setState({ message: 'Something went wrong. Your actual password doesn\'t match.' })
+                    })
+
+                await firebase.auth().currentUser.updatePassword(this.state.newPassword)
+                    .then(() => {
+                        this.setState({ message: 'Your password has been updated' })
+                    }).catch((error) => {
+                        this.setState({ message: error.message })
+                    });
+
+                await updateUser(firebase.auth().currentUser)
+                this.setState({ newPassword: '', newPasswordRepeat: '', oldPassword: '' })
             }
-            //If passwords -> login again -> updatde password
-            if (this.state.newPassword && this.state.newPasswordRepeat && this.state.oldPassword) {
-                if (this.state.newPassword === this.state.newPasswordRepeat) {
-                    await firebase.auth().signInWithEmailAndPassword(this.userAuth.email.trim(), this.state.oldPassword)
-                        .then(async () => {
-                            await user.updatePassword(this.state.newPassword)
-                                .then(async () => {
-                                    user = firebase.auth().currentUser
-                                    await updateUser(user)
-                                    this.setState({ message: 'Your password has been updated' })
-                                }).catch((error) => {
-                                    this.setState({ message: error.message })
-                                });
-                        })
-                        .catch((error) => {
-                            this.setState({ message: 'Something went wrong. Your actual password doesn\'t match.' })
-                        })
-                    this.setState({ newPassword: '', newPasswordRepeat: '', oldPassword: '' })
-                }
-                else
-                    this.setState({ message: 'Something went wrong. Your passwords doesn\'t match.' })
-            }
-            //errors messages
-            if (this.userAuth.email !== this.state.email)
-                this.setState({ message: 'Something went wrong. This email is already used.' })
-            if ((this.userAuth.displayName !== this.state.displayName) && this.userAuth.displayName)
-                this.setState({ message: 'Something went wrong. Your display name hasn\'t been changed.' })
-            //reset state
-            this.setState({
-                loading: false,
-                authChanged: true,
-                displayName: this.userAuth.displayName ? this.userAuth.displayName : this.userAuth.email.split('@')[0],
-                email: this.userAuth.email,
-                avatar: this.userAuth.photoURL,
-                newPassword: '',
-                newPasswordRepeat: '',
-                oldPassword: '',
-                oldPasswordDelete: ''
-            })
+            else
+                this.setState({ message: 'Something went wrong. Your passwords doesn\'t match.' })
+        }
+
+
+        if (this.userAuth.email !== this.state.email)
+            this.setState({ message: 'Something went wrong. This email is already used.' })
+        if ((this.userAuth.displayName !== this.state.displayName) && this.userAuth.displayName)
+            this.setState({ message: 'Something went wrong. Your display name hasn\'t been changed.' })
+
+
+        this.setState({
+            loading: false,
+            authChanged: true,
+            displayName: this.userAuth.displayName ? this.userAuth.displayName : this.userAuth.email.split('@')[0],
+            email: this.userAuth.email,
+            avatar: this.userAuth.photoURL,
+            newPassword: '',
+            newPasswordRepeat: '',
+            oldPassword: '',
+            oldPasswordDelete: ''
         })
     }
 
@@ -92,11 +102,7 @@ class Settings extends Component {
             customButtons: [{ name: 'Delete picture', title: 'Delete actual avatar' }],
         };
         ImagePicker.showImagePicker(options, (response) => {
-            if (response.didCancel) {
-            }
-            else if (response.error) {
-            }
-            else if (response.customButton) {
+            if (response.customButton) {
                 this.setState({ avatar: null })
             }
             else {
@@ -104,6 +110,7 @@ class Settings extends Component {
             }
         })
     }
+
     async onButtonDeletePress(updateUser) {
         Alert.alert(
             'Delete my account',
@@ -119,9 +126,12 @@ class Settings extends Component {
                         var user = firebase.auth().currentUser;
                         var credential = firebase.auth.EmailAuthProvider.credential(user.email, this.state.oldPasswordDelete);
 
-                        await user.reauthenticateWithCredential(credential);
+                        await user.reauthenticateWithCredential(credential)
+                            .catch((error) => { });
                         await firebase.auth().currentUser.delete()
+                            .catch((error) => { });
 
+                        AsyncStorage.removeItem('user')
                         this.props.navigation.navigate('Login')
                     }
                 },

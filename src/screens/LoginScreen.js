@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image, ScrollView } from 'react-native';
 import Button from '../components/button'
 import Icon from 'react-native-vector-icons/AntDesign';
 
 class LoginScreen extends Component {
+
+    componentDidMount() {
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     state = { email: '', password: '', errorMessage: '', loading: '', loggedIn: false }
 
     async onButtonPress(toggleUser) {
@@ -47,7 +56,7 @@ class LoginScreen extends Component {
     render() {
         const { toggleUser } = this.props
         return (
-            <View>
+            <ScrollView>
                 <Image
                     style={styles.background}
                     source={require('../../assets/img/background.jpg')}
@@ -92,7 +101,7 @@ class LoginScreen extends Component {
                         }
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }

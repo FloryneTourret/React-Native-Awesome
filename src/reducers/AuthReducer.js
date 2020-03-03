@@ -18,9 +18,6 @@ const saveUser = async (user) => {
     if (user)
         try {
             await AsyncStorage.setItem('user', user);
-            await firebase.auth().signInWithCustomToken(user.uid)
-                .catch(function (error) {
-                })
         } catch (error) {
         }
     else

@@ -4,6 +4,14 @@ import { connect } from 'react-redux';
 
 class HomeScreen extends Component {
 
+    componentDidMount() {
+        this.mounted = true;
+    }
+
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+
     render() {
         const { userAuth } = this.props
 
