@@ -12,18 +12,18 @@ import { AsyncStorage } from "react-native";
 
 class Settings extends Component {
 
-
-    userAuth = this.props.auth.userAuth
     state = {
+        userAuth: this.props.auth.userAuth,
         authChanged: false,
-        displayName: this.userAuth.displayName ? this.userAuth.displayName : this.userAuth.email.split('@')[0],
-        avatar: this.userAuth.photoURL ? this.userAuth.photoURL : null,
-        email: this.userAuth.email,
+        displayName: this.props.auth.userAuth.displayName ? this.props.auth.userAuth.displayName : this.props.auth.userAuth.email.split('@')[0],
+        avatar: this.props.auth.userAuth.photoURL ? this.props.auth.userAuth.photoURL : null,
+        email: this.props.auth.userAuth.email,
         loading: '',
         message: '',
         oldPassword: '',
         newPassword: '',
         newPasswordRepeat: '',
+
     };
 
     componentDidMount() {
@@ -40,19 +40,22 @@ class Settings extends Component {
 
         this.setState({ loading: true, message: '' })
 
-        if (this.state.displayName !== this.userAuth.displayName || this.state.email !== this.userAuth.email || this.state.avatar !== this.userAuth.photoURL) {
-            data = {
-                displayName: this.state.displayName,
-                email: this.state.email.trim(),
-                photoURL: this.state.avatar
-            }
-            await firebase.auth().currentUser.updateProfile(data)
-                .catch((error) => {
-                    this.setState({ message: error.message })
-                });
-
-            await updateUser(firebase.auth().currentUser)
+        data = {
+            displayName: this.state.displayName,
+            photoURL: this.state.avatar
         }
+        await firebase.auth().currentUser.updateProfile(data)
+            .catch((error) => {
+                console.log(error)
+                this.setState({ message: error.message })
+            });
+
+        await firebase.auth().currentUser.updateEmail(this.state.email)
+            .catch((error) => {
+                console.log(error)
+                this.setState({ message: error.message })
+            });
+        await updateUser(firebase.auth().currentUser)
 
 
         if (this.state.newPassword && this.state.newPasswordRepeat && this.state.oldPassword) {
@@ -77,18 +80,15 @@ class Settings extends Component {
         }
 
 
-        if (this.userAuth.email !== this.state.email)
-            this.setState({ message: 'Something went wrong. This email is already used.' })
-        if ((this.userAuth.displayName !== this.state.displayName) && this.userAuth.displayName)
+        if (this.props.auth.userAuth.email !== this.state.email)
+            this.setState({ message: 'Something went wrong. This email is already used.', email: this.props.auth.userAuth.email })
+        if ((this.props.auth.userAuth.displayName !== this.state.displayName) && this.props.auth.userAuth.displayName)
             this.setState({ message: 'Something went wrong. Your display name hasn\'t been changed.' })
 
 
         this.setState({
             loading: false,
             authChanged: true,
-            displayName: this.userAuth.displayName ? this.userAuth.displayName : this.userAuth.email.split('@')[0],
-            email: this.userAuth.email,
-            avatar: this.userAuth.photoURL,
             newPassword: '',
             newPasswordRepeat: '',
             oldPassword: '',
