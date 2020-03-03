@@ -60,10 +60,11 @@ class Settings extends Component {
 
         if (this.state.newPassword && this.state.newPasswordRepeat && this.state.oldPassword) {
             if (this.state.newPassword === this.state.newPasswordRepeat) {
-                await firebase.auth().signInWithEmailAndPassword(this.userAuth.email.trim(), this.state.oldPassword)
-                    .catch((error) => {
-                        this.setState({ message: 'Something went wrong. Your actual password doesn\'t match.' })
-                    })
+                var user = firebase.auth().currentUser;
+                var credential = firebase.auth.EmailAuthProvider.credential(user.email, this.state.oldPassword);
+
+                await user.reauthenticateWithCredential(credential)
+                    .catch((error) => { });
 
                 await firebase.auth().currentUser.updatePassword(this.state.newPassword)
                     .then(() => {
