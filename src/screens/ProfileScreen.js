@@ -68,7 +68,7 @@ class ProfileScreen extends Component {
                         :
                         <Text style={styles.heading}>{userAuth.email.split('@')[0]}</Text>
                 }
-                <Text style={styles.subHeading}>{userAuth.email}</Text>
+                <Text style={styles.subHeading}>Sub heading</Text>
 
                 <View style={styles.navigation}>
                     <Navbar>

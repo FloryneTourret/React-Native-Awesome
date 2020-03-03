@@ -19,7 +19,10 @@ class Settings extends Component {
         avatar: this.props.auth.userAuth.photoURL ? this.props.auth.userAuth.photoURL : null,
         email: this.props.auth.userAuth.email,
         loading: '',
-        message: '',
+        messagePublic: '',
+        messageEmail: '',
+        messageDelete: '',
+        messagePassword: '',
         oldPassword: '',
         newPassword: '',
         newPasswordRepeat: '',
@@ -38,7 +41,13 @@ class Settings extends Component {
 
     async onButtonUpdatePress(updateUser) {
 
-        this.setState({ loading: true, message: '' })
+        this.setState({
+            loading: true,
+            messagePublic: '',
+            messageEmail: '',
+            messageDelete: '',
+            messagePassword: '',
+        })
 
         data = {
             displayName: this.state.displayName,
@@ -47,13 +56,13 @@ class Settings extends Component {
         await firebase.auth().currentUser.updateProfile(data)
             .catch((error) => {
                 console.log(error)
-                this.setState({ message: error.message })
+                this.setState({ messagePublic: error.message })
             });
 
         await firebase.auth().currentUser.updateEmail(this.state.email)
             .catch((error) => {
                 console.log(error)
-                this.setState({ message: error.message })
+                this.setState({ messageEmail: error.message })
             });
         await updateUser(firebase.auth().currentUser)
 
@@ -68,23 +77,23 @@ class Settings extends Component {
 
                 await firebase.auth().currentUser.updatePassword(this.state.newPassword)
                     .then(() => {
-                        this.setState({ message: 'Your password has been updated' })
+                        this.setState({ messagePassword: 'Your password has been updated' })
                     }).catch((error) => {
-                        this.setState({ message: error.message })
+                        this.setState({ messagePassword: error.message })
                     });
 
                 await updateUser(firebase.auth().currentUser)
                 this.setState({ newPassword: '', newPasswordRepeat: '', oldPassword: '' })
             }
             else
-                this.setState({ message: 'Something went wrong. Your passwords doesn\'t match.' })
+                this.setState({ messagePassword: 'Something went wrong. Your passwords doesn\'t match.' })
         }
 
 
         if (this.props.auth.userAuth.email !== this.state.email)
-            this.setState({ message: 'Something went wrong. This email is already used.', email: this.props.auth.userAuth.email })
+            this.setState({ messageEmail: 'Something went wrong. This email is already used.', email: this.props.auth.userAuth.email })
         if ((this.props.auth.userAuth.displayName !== this.state.displayName) && this.props.auth.userAuth.displayName)
-            this.setState({ message: 'Something went wrong. Your display name hasn\'t been changed.' })
+            this.setState({ messagePublic: 'Something went wrong. Your display name hasn\'t been changed.' })
 
 
         this.setState({
@@ -113,6 +122,13 @@ class Settings extends Component {
     }
 
     async onButtonDeletePress(updateUser) {
+        this.setState({
+            loading: true,
+            messagePublic: '',
+            messageEmail: '',
+            messageDelete: '',
+            messagePassword: '',
+        })
         Alert.alert(
             'Delete my account',
             'Are you sure? This action can\'t be reversed',
@@ -125,15 +141,18 @@ class Settings extends Component {
                     text: 'Yes delete my account',
                     onPress: async () => {
                         var user = firebase.auth().currentUser;
-                        var credential = firebase.auth.EmailAuthProvider.credential(user.email, this.state.oldPasswordDelete);
+                        if (this.state.oldPasswordDelete) {
+                            var credential = firebase.auth.EmailAuthProvider.credential(user.email, this.state.oldPasswordDelete);
 
-                        await user.reauthenticateWithCredential(credential)
-                            .catch((error) => { });
-                        await firebase.auth().currentUser.delete()
-                            .catch((error) => { });
+                            await user.reauthenticateWithCredential(credential)
+                                .catch((error) => { });
+                            await firebase.auth().currentUser.delete()
+                                .catch((error) => { });
 
-                        AsyncStorage.removeItem('user')
-                        this.props.navigation.navigate('Login')
+                            AsyncStorage.removeItem('user')
+                            this.props.navigation.navigate('Login')
+                        }
+                        this.setState({ messageDelete: 'Something went wrong. Actual password is required.' })
                     }
                 },
             ],
@@ -174,19 +193,23 @@ class Settings extends Component {
                         }
                     </TouchableOpacity>
                     <View style={styles.form}>
-                        {this.state.message ? <Text style={styles.error}>{this.state.message}</Text> : null}
+                        {this.state.messagePublic ? <Text style={styles.error}>{this.state.messagePublic}</Text> : null}
                         <Input
                             icon="user"
                             placeholder="Display Name"
                             value={this.state.displayName}
                             onChangeText={(displayName) => this.setState({ displayName })}
                         />
+
+                        {this.state.messageEmail ? <Text style={styles.error}>{this.state.messageEmail}</Text> : null}
                         <Input
                             icon="mail"
                             placeholder="john.doe@gmail.com"
                             value={this.state.email}
                             onChangeText={(email) => this.setState({ email })}
                         />
+
+                        {this.state.messagePassword ? <Text style={styles.error}>{this.state.messagePassword}</Text> : null}
                         <Input
                             icon="lock"
                             placeholder="Actual Password"
@@ -217,6 +240,7 @@ class Settings extends Component {
                         }
                         <View style={styles.sectionDelete}>
 
+                            {this.state.messageDelete ? <Text style={styles.error}>{this.state.messageDelete}</Text> : null}
                             <Input
                                 icon="lock"
                                 placeholder="Actual Password"
