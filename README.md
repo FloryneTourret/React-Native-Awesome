@@ -13,6 +13,7 @@ react-native start
 
 
 npm install --save react-native-firebase
+npm install --save react-native-image-picker
 ```
 
 
