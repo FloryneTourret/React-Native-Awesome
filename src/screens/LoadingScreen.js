@@ -6,15 +6,8 @@ import { Container } from '../components/';
 
 class LoadingScreen extends Component {
 
-    componentDidMount() {
-        this.mounted = true;
-    }
-
-    componentWillUnmount() {
-        this.mounted = false;
-    }
-
     async componentDidMount() {
+        this.mounted = true;
         const { toggleUser } = this.props
         try {
             user = await AsyncStorage.getItem('user')
@@ -30,6 +23,9 @@ class LoadingScreen extends Component {
         }
     }
 
+    componentWillUnmount() {
+        this.mounted = false;
+    }
 
     render() {
 
@@ -41,11 +37,6 @@ class LoadingScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 30,
-        flex: 1,
-        backgroundColor: '#F4F4FA',
-    }
 });
 
 const toggleUser = (value) => {

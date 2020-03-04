@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import firebase from 'firebase';
-import { ScrollView, StyleSheet, TouchableOpacity, Text, ActivityIndicator, View } from 'react-native';
-import ImagePicker from 'react-native-image-picker'
+import { ScrollView, StyleSheet, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { HeaderNav, Container, Avatar, Input, Button, Message } from '../components';
+import firebase from 'firebase';
+import { connect } from 'react-redux';
 import IconBadge from 'react-native-icon-badge';
+import ImagePicker from 'react-native-image-picker'
 
 
 class SettingsAccount extends Component {

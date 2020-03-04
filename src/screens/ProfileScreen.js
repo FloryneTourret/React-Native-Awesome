@@ -9,7 +9,7 @@ import { Navbar, Link, ContentBox, Avatar, Container, Heading, SubHeading } from
 
 class ProfileScreen extends Component {
 
-    componentDidMount() {
+    async componentDidMount() {
         this.mounted = true;
     }
 
