@@ -32,7 +32,7 @@ class LoginScreen extends Component {
                 })
                 .catch((err) => {
                     firebase.auth().createUserWithEmailAndPassword(email.trim(), password)
-                        .then((response) => {
+                        .then(() => {
                             this.setState({ email: '', password: '', errorMessage: '', loading: '' })
                         })
                         .catch((err) => {

@@ -17,7 +17,7 @@ const NavLink = ({ icon, label, onPress }) => {
 const styles = StyleSheet.create({
     link: {
         flexDirection: 'row',
-        marginVertical: 15
+        marginVertical: 20
     },
     iconLink: {
         fontSize: 20,
