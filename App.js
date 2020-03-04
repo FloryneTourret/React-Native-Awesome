@@ -16,12 +16,19 @@ import SettingsAccountScreen from './src/screens/SettingsAccountScreen'
 import SettingsEmailScreen from './src/screens/SettingsEmailScreen'
 import SettingsPasswordScreen from './src/screens/SettingsPasswordScreen'
 import SettingsDeleteScreen from './src/screens/SettingsDeleteScreen'
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen'
 
 
 const LoginFlow = createStackNavigator(
   {
     Login: {
       screen: LoginScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    ForgotPassword: {
+      screen: ForgotPasswordScreen,
       navigationOptions: {
         headerShown: false,
       }

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { AsyncStorage } from "react-native";
 
-import { Navbar, Link, ContentBox, Avatar, Container, Heading, SubHeading } from '../components/'
+import { Navbar, NavigationLink, ContentBox, Avatar, Container, Heading, SubHeading } from '../components/'
 
 class ProfileScreen extends Component {
 
@@ -60,9 +60,9 @@ class ProfileScreen extends Component {
 
                 <View style={styles.navigation}>
                     <Navbar>
-                        <Link data={link1} onPress={() => { toggleActive(link1) }}></Link>
-                        <Link data={link2} onPress={() => { toggleActive(link2) }}></Link>
-                        <Link data={link3} onPress={() => { toggleActive(link3) }}></Link>
+                        <NavigationLink data={link1} onPress={() => { toggleActive(link1) }}></NavigationLink>
+                        <NavigationLink data={link2} onPress={() => { toggleActive(link2) }}></NavigationLink>
+                        <NavigationLink data={link3} onPress={() => { toggleActive(link3) }}></NavigationLink>
                     </Navbar>
                 </View>
 

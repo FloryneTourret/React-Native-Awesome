@@ -1,30 +1,32 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-const Link = ({ data, onPress }) => {
+const Link = ({ icon, label, onPress }) => {
     return (
-        <TouchableOpacity onPress={onPress}>
-            <View style={styles.button}>
-                {data.active ? <Text style={styles.active}>{data.label}</Text> : <Text style={styles.link}>{data.label}</Text>}
-            </View>
+        <TouchableOpacity style={styles.link} onPress={onPress}>
+            <Icon
+                name={icon}
+                style={styles.iconLink}
+            />
+            <Text style={styles.textLink}>{label}</Text>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    button: {
-        padding: 15
-    },
     link: {
-        textTransform: 'uppercase',
-        color: '#909AA2',
-        fontSize: 14
+        flexDirection: 'row',
+        marginVertical: 20
     },
-    active: {
-        textTransform: 'uppercase',
-        color: '#575F71',
-        fontSize: 14,
-        fontWeight: 'bold'
+    iconLink: {
+        fontSize: 20,
+        color: '#7F8B9E',
+        marginRight: 20
+    },
+    textLink: {
+        fontSize: 18,
+        color: '#7F8B9E',
     }
 });
 

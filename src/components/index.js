@@ -10,5 +10,5 @@ export * from './link';
 export * from './listWithAvatar';
 export * from './message';
 export * from './navbar';
-export * from './navLink';
+export * from './navigationLink';
 export * from './subHeading';

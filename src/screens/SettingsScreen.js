@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { HeaderNav, Avatar, Container, Heading, SubHeading, NavLink } from '../components/';
+import { HeaderNav, Avatar, Container, Heading, SubHeading, Link } from '../components/';
 
 
 class Settings extends Component {
@@ -43,25 +43,25 @@ class Settings extends Component {
 
                     </View>
                     <View style={styles.links}>
-                        <NavLink
+                        <Link
                             onPress={() => this.props.navigation.navigate('SettingsAccount')}
                             icon="user"
                             label="Edit account"
                         />
 
-                        <NavLink
+                        <Link
                             onPress={() => this.props.navigation.navigate('SettingsEmail')}
                             icon="mail"
                             label="Edit email"
                         />
 
-                        <NavLink
+                        <Link
                             onPress={() => this.props.navigation.navigate('SettingsPassword')}
                             icon="lock"
                             label="Edit password"
                         />
 
-                        <NavLink
+                        <Link
                             onPress={() => this.props.navigation.navigate('SettingsDelete')}
                             icon="deleteuser"
                             label="Delete account"

@@ -3,7 +3,7 @@ import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { Button, Container } from '../components/'
+import { Button, Container, Link } from '../components/'
 
 class LoginScreen extends Component {
 
@@ -100,6 +100,11 @@ class LoginScreen extends Component {
                             <Button label='Log In' onPress={() => { this.onButtonPress(toggleUser) }}></Button>
                         }
                     </View>
+                    <Link
+                        onPress={() => this.props.navigation.navigate('ForgotPassword')}
+                        icon="questioncircleo"
+                        label="Forgot password?"
+                    />
                 </Container>
             </ScrollView>
         );
