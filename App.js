@@ -12,6 +12,10 @@ import ProfileScreen from './src/screens/ProfileScreen'
 import LoginScreen from './src/screens/LoginScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
 import SettingsScreen from './src/screens/SettingsScreen'
+import SettingsAccountScreen from './src/screens/SettingsAccountScreen'
+import SettingsEmailScreen from './src/screens/SettingsEmailScreen'
+import SettingsPasswordScreen from './src/screens/SettingsPasswordScreen'
+import SettingsDeleteScreen from './src/screens/SettingsDeleteScreen'
 
 
 const LoginFlow = createStackNavigator(
@@ -32,6 +36,30 @@ const ProfileFlow = createStackNavigator(
   {
     Settings: {
       screen: SettingsScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    SettingsAccount: {
+      screen: SettingsAccountScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    SettingsEmail: {
+      screen: SettingsEmailScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    SettingsPassword: {
+      screen: SettingsPasswordScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    SettingsDelete: {
+      screen: SettingsDeleteScreen,
       navigationOptions: {
         headerShown: false,
       }

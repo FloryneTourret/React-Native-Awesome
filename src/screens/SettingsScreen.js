@@ -22,10 +22,14 @@ class Settings extends Component {
                 <HeaderNav icon="arrowleft" label="Settings" onPress={() => { this.props.navigation.goBack() }} />
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.data}>
-                        {userAuth.avatar ?
-                            <Avatar source={{ uri: userAuth.avatar }} />
+                        {userAuth.photoURL ?
+                            <Avatar
+                                source={{ uri: userAuth.photoURL }}
+                            />
                             :
-                            <Avatar source={require('../../assets/img/user.png')} />
+                            <Avatar
+                                source={require('../../assets/img/user.png')}
+                            />
                         }
 
                         {
@@ -40,25 +44,25 @@ class Settings extends Component {
                     </View>
                     <View style={styles.links}>
                         <NavLink
-                            onPress={() => this.props.navigation.navigate('Profile')}
+                            onPress={() => this.props.navigation.navigate('SettingsAccount')}
                             icon="user"
                             label="Edit account"
                         />
 
                         <NavLink
-                            onPress={() => this.props.navigation.navigate('Profile')}
+                            onPress={() => this.props.navigation.navigate('SettingsEmail')}
                             icon="mail"
                             label="Edit email"
                         />
 
                         <NavLink
-                            onPress={() => this.props.navigation.navigate('Profile')}
+                            onPress={() => this.props.navigation.navigate('SettingsPassword')}
                             icon="lock"
                             label="Edit password"
                         />
 
                         <NavLink
-                            onPress={() => this.props.navigation.navigate('Profile')}
+                            onPress={() => this.props.navigation.navigate('SettingsDelete')}
                             icon="deleteuser"
                             label="Delete account"
                         />
