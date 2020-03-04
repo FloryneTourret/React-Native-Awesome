@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image, ScrollView, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Button, Container, Link } from '../components/'
 
@@ -9,13 +9,28 @@ class LoginScreen extends Component {
 
     componentDidMount() {
         this.mounted = true;
+        Animated.timing(
+            this.state.fadeHeading,
+            {
+                toValue: 1,
+                duration: 1000,
+            }
+        ).start();
+        Animated.timing(
+            this.state.fadeSubHeading,
+            {
+                toValue: 1,
+                duration: 1000,
+                delay: 500
+            }
+        ).start();
     }
 
     componentWillUnmount() {
         this.mounted = false;
     }
 
-    state = { email: '', password: '', errorMessage: '', loading: '', loggedIn: false }
+    state = { email: '', password: '', errorMessage: '', loading: '', loggedIn: false, fadeHeading: new Animated.Value(0), fadeSubHeading: new Animated.Value(0) }
 
     async onButtonPress(toggleUser) {
         const { email, password } = this.state;
@@ -55,6 +70,8 @@ class LoginScreen extends Component {
 
     render() {
         const { toggleUser } = this.props
+
+
         return (
             <ScrollView>
                 <Image
@@ -62,8 +79,12 @@ class LoginScreen extends Component {
                     source={require('../../assets/img/background.jpg')}
                 />
                 <Container>
-                    <Text style={styles.heading}>Welcome</Text>
-                    <Text style={styles.subheading}>Log In or Join now !</Text>
+                    <Animated.View style={{ opacity: this.state.fadeHeading }}>
+                        <Text style={styles.heading}>Welcome</Text>
+                    </Animated.View>
+                    <Animated.View style={{ opacity: this.state.fadeSubHeading }}>
+                        <Text style={styles.subheading}>Log In or Join now !</Text>
+                    </Animated.View>
                     {this.state.errorMessage ? <Text style={styles.error}>{this.state.errorMessage}</Text> : null}
                     <View style={styles.section}>
                         <Icon
