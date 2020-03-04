@@ -5,7 +5,14 @@ import firebase from 'firebase';
 import { connect } from 'react-redux';
 import IconBadge from 'react-native-icon-badge';
 import ImagePicker from 'react-native-image-picker'
+import RNFetchBlob from 'react-native-fetch-blob'
+import '../components/fixTimerBug';
 
+
+const Blob = RNFetchBlob.polyfill.Blob
+const fs = RNFetchBlob.fs
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+window.Blob = Blob
 
 class SettingsAccount extends Component {
 
@@ -19,49 +26,87 @@ class SettingsAccount extends Component {
     }
 
     state = {
+        loadingAvatar: false,
         loading: false,
         message: '',
         displayName: this.props.auth.userAuth.displayName ? this.props.auth.userAuth.displayName : this.props.auth.userAuth.email.split('@')[0],
         avatar: this.props.auth.userAuth.photoURL ? this.props.auth.userAuth.photoURL : null,
     }
 
-    async onAvatarPress() {
+
+    async onButtonUpdatePress(updateUser) {
+        this.setState({ loading: true, message: '' })
+
+        await firebase.auth().currentUser.updateProfile({ displayName: this.state.displayName })
+            .then(() => {
+                this.setState({ message: 'Success !' })
+            }).catch((error) => {
+                this.setState({ message: error.message })
+            });
+
+        await updateUser(firebase.auth().currentUser)
+
+        this.setState({ loading: false })
+    }
+
+    async onAvatarPress(updateUser) {
         const options = {
             title: 'Select Avatar',
             customButtons: [{ name: 'Delete picture', title: 'Delete actual avatar' }],
         };
+
         ImagePicker.showImagePicker(options, (response) => {
-            if (response.customButton) {
+            if (response.didCancel) {
+            } else if (response.error) {
+            } else if (response.customButton) {
+                firebase.auth().currentUser.updateProfile({ photoURL: null })
+                    .then(async () => {
+                        await updateUser(firebase.auth().currentUser)
+                        this.setState({ message: 'Succes ! Avatar removed' })
+                    }).catch((error) => {
+                        this.setState({ message: error.message })
+                    });
                 this.setState({ avatar: null })
             }
             else {
-                this.setState({ avatar: response.uri })
+                this.setState({ loadingAvatar: true, message: '' })
+                this.uploadImage(response.uri)
+                    .then(async (url) => {
+                        this.setState({ avatar: url, loadingAvatar: false })
+                        await firebase.auth().currentUser.updateProfile({ photoURL: url })
+                            .then(async () => {
+                                await updateUser(firebase.auth().currentUser)
+                                this.setState({ message: 'Succes ! Avatar uploaded' })
+                            }).catch((error) => {
+                                this.setState({ message: error.message })
+                            });
+                    }).catch((error) => {
+                        this.setState({ loadingAvatar: false, message: error })
+                    })
             }
         })
     }
 
-    async onButtonUpdatePress(updateUser) {
+    uploadImage(uri, mime = 'application/octet-stream') {
+        return new Promise((resolve, reject) => {
+            const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+            let uploadBlob = null
+            const imageRef = firebase.storage().ref('images').child('_' + Math.random().toString(36).substr(2, 9))
 
-        this.setState({
-            loading: true,
-            message: '',
-        })
-
-        await firebase.auth().currentUser.updateProfile(
-            {
-                displayName: this.state.displayName,
-                photoURL: this.state.avatar
-            }
-        ).then(() => {
-            this.setState({ message: 'Success !' })
-        }).catch((error) => {
-            this.setState({ message: error.message })
-        });
-
-        await updateUser(firebase.auth().currentUser)
-
-        this.setState({
-            loading: false,
+            fs.readFile(uploadUri, 'base64')
+                .then((data) => {
+                    return Blob.build(data, { type: `${mime};BASE64` })
+                }).then((blob) => {
+                    uploadBlob = blob
+                    return imageRef.put(blob, { contentType: mime })
+                }).then(() => {
+                    uploadBlob.close()
+                    return imageRef.getDownloadURL()
+                }).then((url) => {
+                    resolve(url)
+                }).catch((error) => {
+                    reject(error)
+                })
         })
     }
 
@@ -73,18 +118,22 @@ class SettingsAccount extends Component {
                 <HeaderNav icon="arrowleft" label="Edit Account" onPress={() => { this.props.navigation.goBack() }} />
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.fields}>
 
-                    <TouchableOpacity onPress={() => this.onAvatarPress()} style={styles.badgeContainer}>
-                        <IconBadge
-                            MainElement={
-                                this.state.avatar ?
-                                    <Avatar source={{ uri: this.state.avatar }} />
-                                    :
-                                    <Avatar source={require('../../assets/img/user.png')} />
-                            }
-                            BadgeElement={<Text style={styles.badgeText}>+</Text>}
-                            IconBadgeStyle={styles.badgeStyle}
-                        />
-                    </TouchableOpacity>
+                    {this.state.loadingAvatar ?
+                        <ActivityIndicator size="large" color="#0000ff" style={{ height: 170 }} />
+                        :
+                        <TouchableOpacity onPress={() => this.onAvatarPress(updateUser)} style={styles.badgeContainer}>
+                            <IconBadge
+                                MainElement={
+                                    this.state.avatar ?
+                                        <Avatar source={{ uri: this.state.avatar }} />
+                                        :
+                                        <Avatar source={require('../../assets/img/user.png')} />
+                                }
+                                BadgeElement={<Text style={styles.badgeText}>+</Text>}
+                                IconBadgeStyle={styles.badgeStyle}
+                            />
+                        </TouchableOpacity>
+                    }
 
                     {this.state.message ? <Message>{this.state.message}</Message> : null}
                     <Input
