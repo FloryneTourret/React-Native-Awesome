@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image, ScrollView } from 'react-native';
-import Button from '../components/button'
 import Icon from 'react-native-vector-icons/AntDesign';
-import Container from '../components/container';
+import { Button, Container } from '../components/'
 
 class LoginScreen extends Component {
 

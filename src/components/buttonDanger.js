@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-const Button = ({ label, onPress }) => {
+const ButtonDanger = ({ label, onPress }) => {
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.button}>
@@ -44,4 +44,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Button;
+export { ButtonDanger };

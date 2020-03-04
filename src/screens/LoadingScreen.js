@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, } from 'react-native';
 import { connect } from 'react-redux';
 import { AsyncStorage } from "react-native";
-import Container from '../components/container';
+import { Container } from '../components/';
 
 class LoadingScreen extends Component {
 

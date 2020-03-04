@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import { AsyncStorage } from "react-native";
 
-import Navbar from '../components/navbar'
-import Link from '../components/link'
-import ContentBox from '../components/contentBox'
-import Avatar from '../components/avatar';
-import Container from '../components/container';
-import Heading from '../components/heading';
-import SubHeading from '../components/subHeading';
+import { Navbar, Link, ContentBox, Avatar, Container, Heading, SubHeading } from '../components/'
 
 class ProfileScreen extends Component {
 

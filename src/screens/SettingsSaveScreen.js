@@ -4,9 +4,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
 import firebase from 'firebase';
 import ImagePicker from 'react-native-image-picker'
-import Input from '../components/input';
-import Button from '../components/button';
-import ButtonDanger from '../components/buttonDanger';
+import { Input, Button, ButtonDanger } from '../components/';
 import { AsyncStorage } from "react-native";
 
 

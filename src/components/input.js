@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-const Button = ({ icon, placeholder, value, onChangeText, secured }) => {
+const Input = ({ icon, placeholder, value, onChangeText, secured }) => {
     return (
         <View style={styles.section}>
             <Icon
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Button;
+export { Input };

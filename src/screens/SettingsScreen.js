@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import HeaderNav from '../components/headerNav';
-import Avatar from '../components/avatar';
-import Container from '../components/container';
-import Heading from '../components/heading';
-import SubHeading from '../components/subHeading';
+import { HeaderNav, Avatar, Container, Heading, SubHeading, NavLink } from '../components/';
 
 
 class Settings extends Component {
@@ -19,7 +15,7 @@ class Settings extends Component {
     }
 
     render() {
-        const { userAuth } = this.props
+        const { userAuth } = this.props.auth
 
         return (
             <Container>
@@ -43,7 +39,29 @@ class Settings extends Component {
 
                     </View>
                     <View style={styles.links}>
-                        <Text>Liens </Text>
+                        <NavLink
+                            onPress={() => this.props.navigation.navigate('Profile')}
+                            icon="user"
+                            label="Edit account"
+                        />
+
+                        <NavLink
+                            onPress={() => this.props.navigation.navigate('Profile')}
+                            icon="mail"
+                            label="Edit email"
+                        />
+
+                        <NavLink
+                            onPress={() => this.props.navigation.navigate('Profile')}
+                            icon="lock"
+                            label="Edit password"
+                        />
+
+                        <NavLink
+                            onPress={() => this.props.navigation.navigate('Profile')}
+                            icon="deleteuser"
+                            label="Delete account"
+                        />
                     </View>
                 </ScrollView>
             </Container>

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import Container from '../components/container';
-import Heading from '../components/heading';
+import { Container, Heading } from '../components/';
 
 class HomeScreen extends Component {
 
