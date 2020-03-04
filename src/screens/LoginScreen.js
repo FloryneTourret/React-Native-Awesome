@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { View, StyleSheet, Text, TextInput, Keyboard, ActivityIndicator, Image, ScrollView } from 'react-native';
 import Button from '../components/button'
 import Icon from 'react-native-vector-icons/AntDesign';
+import Container from '../components/container';
 
 class LoginScreen extends Component {
 
@@ -61,7 +62,7 @@ class LoginScreen extends Component {
                     style={styles.background}
                     source={require('../../assets/img/background.jpg')}
                 />
-                <View style={styles.container}>
+                <Container>
                     <Text style={styles.heading}>Welcome</Text>
                     <Text style={styles.subheading}>Log In or Join now !</Text>
                     {this.state.errorMessage ? <Text style={styles.error}>{this.state.errorMessage}</Text> : null}
@@ -100,7 +101,7 @@ class LoginScreen extends Component {
                             <Button label='Log In' onPress={() => { this.onButtonPress(toggleUser) }}></Button>
                         }
                     </View>
-                </View>
+                </Container>
             </ScrollView>
         );
     }
@@ -112,13 +113,6 @@ const styles = StyleSheet.create({
     background: {
         height: 200,
         width: 'auto'
-    },
-    container: {
-        padding: 30,
-        backgroundColor: '#F4F4FA',
-        marginTop: -20,
-        borderTopRightRadius: 15,
-        borderTopLeftRadius: 15,
     },
     heading: {
         color: '#364354',

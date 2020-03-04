@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, } from 'react-native';
+import { StyleSheet, } from 'react-native';
 import { connect } from 'react-redux';
 import { AsyncStorage } from "react-native";
+import Container from '../components/container';
 
 class LoadingScreen extends Component {
 
@@ -15,33 +16,26 @@ class LoadingScreen extends Component {
 
     async componentDidMount() {
         const { toggleUser } = this.props
-
-        const getUser = async () => {
-            try {
-                user = await AsyncStorage.getItem('user')
-                if (user) {
-                    await toggleUser(JSON.parse(user))
-                }
-                else {
-                    await toggleUser(null)
-                }
-            } catch (error) {
-            }
+        try {
+            user = await AsyncStorage.getItem('user')
+        } catch (error) {
         }
-        await getUser()
-        if (!this.props.userAuth) {
+        if (user) {
+            await toggleUser(JSON.parse(user))
+            this.props.navigation.navigate('Home')
+        }
+        else {
+            await toggleUser(null)
             this.props.navigation.navigate('Login')
         }
-        else
-            this.props.navigation.navigate('Home')
     }
 
 
     render() {
 
         return (
-            <View style={styles.container}>
-            </View>
+            <Container>
+            </Container>
         );
     }
 }

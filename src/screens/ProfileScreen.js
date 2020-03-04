@@ -8,6 +8,10 @@ import { AsyncStorage } from "react-native";
 import Navbar from '../components/navbar'
 import Link from '../components/link'
 import ContentBox from '../components/contentBox'
+import Avatar from '../components/avatar';
+import Container from '../components/container';
+import Heading from '../components/heading';
+import SubHeading from '../components/subHeading';
 
 class ProfileScreen extends Component {
 
@@ -28,47 +32,37 @@ class ProfileScreen extends Component {
         const { userAuth } = auth
 
         return (
-            <ScrollView style={styles.container} >
+            <Container>
                 <View style={styles.linksNav}>
-                    <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('Settings')}
-                    >
-                        <Icon
-                            name="setting"
-                            style={styles.iconLinkSettings}
-                        />
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Settings')} >
+                        <Icon name="setting" style={styles.iconLinkSettings} />
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
                             AsyncStorage.removeItem('user')
                             firebase.auth().signOut()
                             this.props.navigation.navigate('Login')
-                        }}
-                    >
-                        <Icon
-                            name="logout"
-                            style={styles.iconLinkLogout}
-                        />
+                        }} >
+                        <Icon name="logout" style={styles.iconLinkLogout} />
                     </TouchableOpacity>
                 </View>
+
                 {userAuth.photoURL ?
-                    <Image
-                        style={styles.avatar}
+                    <Avatar
                         source={{ uri: userAuth.photoURL }}
                     />
                     :
-                    <Image
-                        style={styles.avatar}
+                    <Avatar
                         source={require('../../assets/img/user.png')}
                     />
                 }
                 {
                     userAuth.displayName ?
-                        <Text style={styles.heading}>{userAuth.displayName}</Text>
+                        <Heading>{userAuth.displayName}</Heading>
                         :
-                        <Text style={styles.heading}>{userAuth.email.split('@')[0]}</Text>
+                        <Heading>{userAuth.email.split('@')[0]}</Heading>
                 }
-                <Text style={styles.subHeading}>Sub heading</Text>
+                <SubHeading>Sub Heading</SubHeading>
 
                 <View style={styles.navigation}>
                     <Navbar>
@@ -100,18 +94,13 @@ class ProfileScreen extends Component {
                         : null
                 }
 
-            </ScrollView >
+            </Container>
         );
     }
 }
 
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 30,
-        flex: 1,
-        backgroundColor: '#F4F4FA',
-    },
     linksNav: {
         flexDirection: 'row',
         justifyContent: 'flex-end'
@@ -125,30 +114,6 @@ const styles = StyleSheet.create({
         fontSize: 23,
         color: '#384356',
         margin: 5
-    },
-    avatar: {
-        width: 150,
-        height: 150,
-        borderRadius: 100,
-        alignSelf: 'center',
-        borderColor: '#FFFFFF',
-        borderWidth: 8
-    },
-    heading: {
-        color: '#364354',
-        fontWeight: 'bold',
-        textTransform: 'capitalize',
-        fontSize: 30,
-        alignSelf: 'center',
-        marginTop: 15
-    },
-    subHeading: {
-        color: '#67707A',
-        alignSelf: 'center',
-        fontSize: 16,
-        textTransform: 'uppercase',
-        fontWeight: '100',
-        marginTop: 5
     },
     navigation: {
         marginTop: 15

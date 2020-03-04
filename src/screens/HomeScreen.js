@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+import Container from '../components/container';
+import Heading from '../components/heading';
 
 class HomeScreen extends Component {
 
@@ -15,21 +17,15 @@ class HomeScreen extends Component {
     render() {
         const { userAuth } = this.props
 
-
         return (
-            <View style={styles.container}>
-                <Text>Home {userAuth.email}</Text>
-            </View>
+            <Container>
+                <Heading>Home</Heading>
+            </Container>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 30,
-        flex: 1,
-        backgroundColor: '#F4F4FA',
-    },
 });
 
 const mapStateToProps = (state) => {
