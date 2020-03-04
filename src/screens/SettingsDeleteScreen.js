@@ -45,9 +45,10 @@ class SettingsDelete extends Component {
                             await user.reauthenticateWithCredential(credential)
                                 .then(async () => {
                                     await firebase.auth().currentUser.delete()
-                                        .then(() => {
+                                        .then(async () => {
                                             AsyncStorage.removeItem('user')
-                                            this.props.navigation.navigate('Login')
+                                            firebase.auth().signOut()
+                                            this.props.navigation.navigate('Loading')
                                         })
                                         .catch((error) => {
                                             this.setState({ messageDelete: 'Something went wrong. Your account hasn\'t been deleted.' })

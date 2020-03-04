@@ -8,17 +8,20 @@ class LoadingScreen extends Component {
 
     async componentDidMount() {
         this.mounted = true;
-        const { toggleUser } = this.props
         try {
             user = await AsyncStorage.getItem('user')
         } catch (error) {
         }
         if (user) {
-            await toggleUser(JSON.parse(user))
-            this.props.navigation.navigate('Home')
+            await this.props.toggleUser(JSON.parse(user))
+            if (this.props.userAuth)
+                this.props.navigation.navigate('Home')
+            else
+                this.props.navigation.navigate('Login')
+
         }
         else {
-            await toggleUser(null)
+            await this.props.toggleUser(null)
             this.props.navigation.navigate('Login')
         }
     }
