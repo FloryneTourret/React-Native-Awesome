@@ -45,7 +45,7 @@ class SettingsPassword extends Component {
                             });
                     })
                     .catch((error) => {
-                        this.setState({ message: error.message })
+                        this.setState({ message: 'Something went wrong. Your password does not match.' })
                     });
 
 

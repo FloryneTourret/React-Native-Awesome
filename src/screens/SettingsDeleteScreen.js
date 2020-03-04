@@ -51,11 +51,11 @@ class SettingsDelete extends Component {
                                             this.props.navigation.navigate('Loading')
                                         })
                                         .catch((error) => {
-                                            this.setState({ messageDelete: 'Something went wrong. Your account hasn\'t been deleted.' })
+                                            this.setState({ message: 'Something went wrong. Your account hasn\'t been deleted.' })
                                         });
                                 })
                                 .catch((error) => {
-                                    this.setState({ messageDelete: 'Something went wrong. Your password does not match.' })
+                                    this.setState({ message: 'Something went wrong. Your password does not match.' })
                                 });
                         }
                     },
@@ -63,7 +63,7 @@ class SettingsDelete extends Component {
                 { cancelable: false },
             );
         } else {
-            this.setState({ messageDelete: 'Something went wrong. Actual password is required.' })
+            this.setState({ message: 'Something went wrong. Actual password is required.' })
         }
     }
 
@@ -77,7 +77,7 @@ class SettingsDelete extends Component {
 
                     <View style={styles.fields}>
 
-                        {this.state.messageDelete ? <Message>{this.state.messageDelete}</Message> : null}
+                        {this.state.message ? <Message>{this.state.message}</Message> : null}
                         <Input
                             icon="lock"
                             placeholder="Actual Password"
