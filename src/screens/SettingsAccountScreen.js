@@ -38,8 +38,8 @@ class SettingsAccount extends Component {
         this.setState({ loading: true, message: '' })
 
         await firebase.auth().currentUser.updateProfile({ displayName: this.state.displayName })
-            .then(() => {
-                firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({ displayName: this.state.displayName })
+            .then(async () => {
+                await firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({ displayName: this.state.displayName })
                 this.setState({ message: 'Success !' })
             }).catch((error) => {
                 this.setState({ message: error.message })
@@ -63,7 +63,7 @@ class SettingsAccount extends Component {
                 firebase.auth().currentUser.updateProfile({ photoURL: null })
                     .then(async () => {
 
-                        firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({ photoURL: null })
+                        await firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({ photoURL: null })
                         await updateUser(firebase.auth().currentUser)
                         this.setState({ message: 'Success ! Avatar removed' })
                     }).catch((error) => {
@@ -78,7 +78,7 @@ class SettingsAccount extends Component {
                         this.setState({ avatar: url, loadingAvatar: false })
                         await firebase.auth().currentUser.updateProfile({ photoURL: url })
                             .then(async () => {
-                                firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({ photoURL: url })
+                                await firebase.database().ref('/users/' + firebase.auth().currentUser.uid).update({ photoURL: url })
                                 await updateUser(firebase.auth().currentUser)
                                 this.setState({ message: 'Success ! Avatar uploaded' })
                             }).catch((error) => {

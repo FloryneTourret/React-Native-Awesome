@@ -61,15 +61,17 @@ class LoginScreen extends Component {
         Keyboard.dismiss()
 
         firebase.auth().onAuthStateChanged(async (user) => {
-            firebase.database().ref('/users/' + user.uid).once('value').then(function (snapshot) {
-                if (!(snapshot.val() && snapshot.val().username)) {
-                    firebase.database().ref('users/' + user.uid).set({
-                        displayName: user.email.split('@')[0],
-                        photoURL: null
-                    });
-                }
-            });
             if (user) {
+                let uid = user.uid
+                firebase.database().ref('/users/' + uid).once('value').then(function (snapshot) {
+                    if (!(snapshot.val() && snapshot.val().uid)) {
+                        firebase.database().ref('users/' + uid).set({
+                            uid: uid,
+                            displayName: user.email.split('@')[0],
+                            photoURL: null
+                        });
+                    }
+                });
                 await toggleUser(user);
                 this.props.navigation.navigate('Loading')
             } else {

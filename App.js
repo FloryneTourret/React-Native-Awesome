@@ -8,6 +8,8 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import firebase from 'firebase';
 import Icon from 'react-native-vector-icons/AntDesign';
 import HomeScreen from './src/screens/HomeScreen'
+import CommunityScreen from './src/screens/CommunityScreen'
+import UserScreen from './src/screens/UserScreen'
 import ProfileScreen from './src/screens/ProfileScreen'
 import LoginScreen from './src/screens/LoginScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
@@ -83,6 +85,27 @@ const ProfileFlow = createStackNavigator(
   }
 )
 
+const CommunityFlow = createStackNavigator(
+  {
+    Community: {
+      screen: CommunityScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    },
+    User: {
+      screen: UserScreen,
+      navigationOptions: {
+        headerShown: false,
+      }
+    }
+  },
+  {
+    initialRouteName: 'Community'
+  }
+);
+
+
 const AuthFlow = createBottomTabNavigator(
   {
     Home: {
@@ -91,6 +114,15 @@ const AuthFlow = createBottomTabNavigator(
         tabBarLabel: 'Home',
         tabBarIcon: ({ tintColor }) => (
           <Icon name="home" color={tintColor} size={25} />
+        )
+      }
+    },
+    Community: {
+      screen: CommunityFlow,
+      navigationOptions: {
+        tabBarLabel: 'Community',
+        tabBarIcon: ({ tintColor }) => (
+          <Icon name="team" color={tintColor} size={25} />
         )
       }
     },
