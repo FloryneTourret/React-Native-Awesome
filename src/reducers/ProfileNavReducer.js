@@ -25,17 +25,6 @@ const initalState = {
             </>,
         active: false
     },
-    link3: {
-        id: 3,
-        label:
-            <>
-                <Icon
-                    name="hearto"
-                />
-                <Text> Dolor</Text>
-            </>,
-        active: false
-    }
 }
 
 const ProfileNav = (state = initalState, action) => {

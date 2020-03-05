@@ -62,7 +62,7 @@ class SettingsAccount extends Component {
                 firebase.auth().currentUser.updateProfile({ photoURL: null })
                     .then(async () => {
                         await updateUser(firebase.auth().currentUser)
-                        this.setState({ message: 'Succes ! Avatar removed' })
+                        this.setState({ message: 'Success ! Avatar removed' })
                     }).catch((error) => {
                         this.setState({ message: error.message })
                     });
@@ -76,7 +76,7 @@ class SettingsAccount extends Component {
                         await firebase.auth().currentUser.updateProfile({ photoURL: url })
                             .then(async () => {
                                 await updateUser(firebase.auth().currentUser)
-                                this.setState({ message: 'Succes ! Avatar uploaded' })
+                                this.setState({ message: 'Success ! Avatar uploaded' })
                             }).catch((error) => {
                                 this.setState({ message: error.message })
                             });

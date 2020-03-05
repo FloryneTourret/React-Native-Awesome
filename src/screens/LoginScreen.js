@@ -9,21 +9,23 @@ class LoginScreen extends Component {
 
     componentDidMount() {
         this.mounted = true;
-        Animated.timing(
-            this.state.fadeHeading,
-            {
-                toValue: 1,
-                duration: 1000,
-            }
-        ).start();
-        Animated.timing(
-            this.state.fadeSubHeading,
-            {
-                toValue: 1,
-                duration: 1000,
-                delay: 500
-            }
-        ).start();
+        Animated.parallel([
+            Animated.timing(
+                this.state.fadeHeading,
+                {
+                    toValue: 1,
+                    duration: 1000,
+                }
+            ),
+            Animated.timing(
+                this.state.fadeSubHeading,
+                {
+                    toValue: 1,
+                    duration: 1000,
+                    delay: 500
+                }
+            )
+        ]).start();
     }
 
     componentWillUnmount() {
